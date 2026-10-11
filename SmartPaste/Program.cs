@@ -28,6 +28,7 @@ internal sealed class TrayApp : ApplicationContext
     private readonly PasteHook hook;
     private readonly AppSettings settings;
     private readonly nint dispatch;
+    private readonly KotorinToys.Integration.ManagementEndpoint management;
     private uint lastSequence = uint.MaxValue;
     private string[]? clipboardFiles;
     private bool clipboardImage;
@@ -65,6 +66,7 @@ internal sealed class TrayApp : ApplicationContext
         timer.Tick += (_, _) => Capture(); timer.Start();
         if (loadError != null) Report("設定の読み込みに失敗しました：" + loadError, true);
         if (!hidden) ShowSettings();
+        management = new("smart-paste", form, ShowSettings, Exit);
     }
     private void Persist()
     {
@@ -159,7 +161,7 @@ internal sealed class TrayApp : ApplicationContext
     private void Exit()
     {
         if (busy) { exitRequested = true; copyCancellation?.Cancel(); activeDialog?.Close(); return; }
-        exiting = true; timer.Stop(); timer.Dispose(); Native.RemoveClipboardFormatListener(dispatch); hook.Dispose(); tray.Visible = false; tray.Dispose(); form.Dispose(); ExitThread();
+        exiting = true; management.Dispose(); timer.Stop(); timer.Dispose(); Native.RemoveClipboardFormatListener(dispatch); hook.Dispose(); tray.Visible = false; tray.Dispose(); form.Dispose(); ExitThread();
     }
 }
 
