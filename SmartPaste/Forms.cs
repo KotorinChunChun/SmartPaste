@@ -37,7 +37,7 @@ internal static class Ui
 {
     public static void Style(Form form, string title, Size size)
     {
-        form.Text = title; form.Font = new Font("Yu Gothic UI", 12); form.ClientSize = size;
+        form.Text = WindowTitle.Create(title); form.Font = new Font("Yu Gothic UI", 12); form.ClientSize = size;
         form.MinimumSize = new Size(700, 440); form.StartPosition = FormStartPosition.CenterScreen;
         form.BackColor = Color.White; form.AutoScaleMode = AutoScaleMode.Dpi;
         form.Shown += (_, _) => { Native.ShowWindow(form.Handle, 9); Native.SetForegroundWindow(form.Handle); };
@@ -70,7 +70,7 @@ internal sealed class CopyForm : Form
     public CopyForm(IEnumerable<CopyChoice> choices, string directory)
     {
         this.choices = choices.Select(c => c.Clone()).ToList(); this.directory = directory;
-        Ui.Style(this, "賢い名付け — コピー名", new Size(920, 540));
+        Ui.Style(this, "コピー名", new Size(920, 540));
         var root = Ui.Table(1, 4);
         root.RowStyles.Add(new(SizeType.Absolute, 38)); root.RowStyles.Add(new(SizeType.Percent, 100));
         root.RowStyles.Add(new(SizeType.Absolute, 42)); root.RowStyles.Add(new(SizeType.Absolute, 80));
@@ -150,7 +150,7 @@ internal sealed class ImageForm : Form
     public ImageForm(Bitmap image, string directory, string executable, OcrEngineKind ocrEngine = OcrEngineKind.OneOcr, string nameSeparator = "_")
     {
         this.image = image; this.directory = directory; this.executable = executable; this.ocrEngine = ocrEngine;
-        Ui.Style(this, "賢い名付け — 画像を保存", new Size(1120, 690));
+        Ui.Style(this, "画像を保存", new Size(1120, 690));
         MinimumSize = new Size(900, 680);
         var root = Ui.Table(2, 1); root.ColumnStyles.Add(new(SizeType.Percent, 57)); root.ColumnStyles.Add(new(SizeType.Percent, 43));
         var preview = new PictureBox { Name = "ImagePreview", Dock = DockStyle.Fill, Image = image, SizeMode = PictureBoxSizeMode.Zoom, BackColor = Color.FromArgb(242, 244, 247) };
@@ -313,7 +313,7 @@ internal sealed class SettingsForm : Form
     public Label State { get; } = Ui.Label("");
     public SettingsForm()
     {
-        Ui.Style(this, "賢い名付け — 設定", new Size(760, 470));
+        Ui.Style(this, "設定", new Size(760, 470));
         var root = Ui.Table(1, 8);
         foreach (int height in new[] { 38, 38, 34, 38, 34, 36, 40 }) root.RowStyles.Add(new(SizeType.Absolute, height));
         root.RowStyles.Add(new(SizeType.Percent, 100));
@@ -334,7 +334,7 @@ internal sealed class ProgressForm : Form
     public bool Finished { get; set; }
     public ProgressForm(CancellationTokenSource cancellation)
     {
-        Ui.Style(this, "賢い名付け — コピー中", new Size(700, 150)); MinimumSize = new Size(520, 190);
+        Ui.Style(this, "コピー中", new Size(700, 150)); MinimumSize = new Size(520, 190);
         var root = Ui.Table(1, 2); root.RowStyles.Add(new(SizeType.Percent, 100)); root.RowStyles.Add(new(SizeType.Absolute, 44));
         root.Controls.Add(State, 0, 0); root.Controls.Add(Ui.Button("StopCopy", "中止", (_, _) => cancellation.Cancel()), 0, 1); Controls.Add(root);
         FormClosing += (_, e) => { if (!Finished) { cancellation.Cancel(); e.Cancel = true; } };

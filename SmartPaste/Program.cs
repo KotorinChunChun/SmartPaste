@@ -185,7 +185,7 @@ internal static class Program
         try { using var app = new TrayApp(true); Application.Run(app); }
         catch (Exception ex)
         {
-            using var error = new Form(); Ui.Style(error, "賢い名付け — 起動エラー", new Size(760, 440));
+            using var error = new Form(); Ui.Style(error, "起動エラー", new Size(760, 440));
             error.Controls.Add(new TextBox { Dock = DockStyle.Fill, Multiline = true, ReadOnly = true, Text = ex.Message }); Application.Run(error);
         }
     }

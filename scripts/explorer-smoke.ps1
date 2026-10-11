@@ -3,6 +3,8 @@ $ErrorActionPreference = 'Stop'
 . $Toolkit
 $appRoot = Split-Path $PSScriptRoot -Parent
 $exe = Join-Path $appRoot 'SmartPaste\bin\Release\net8.0-windows10.0.19041.0\SmartPaste.exe'
+$productVersion = [Diagnostics.FileVersionInfo]::GetVersionInfo($exe)
+$titleVersion = '{0}.{1}.{2}' -f $productVersion.FileMajorPart, $productVersion.FileMinorPart, $productVersion.FileBuildPart
 $testExe = Join-Path $appRoot 'SmartPaste.Tests\bin\Release\net8.0-windows10.0.19041.0\SmartPaste.Tests.exe'
 $testDir = Join-Path $appRoot 'artifacts\explorer-fixture'
 $source = Join-Path $testDir 'R01報告書.txt'
@@ -62,7 +64,7 @@ try {
     Send-TextInput -WindowHandle $window -Text '^v' -Raw
     for ($i = 0; $i -lt 40; $i++) { if (Test-Path -LiteralPath (Join-Path $testDir 'R02報告書.txt')) { break }; Start-Sleep -Milliseconds 150 }
     if (-not (Test-Path -LiteralPath (Join-Path $testDir 'R02報告書.txt'))) {
-        $settingsWindow = Wait-AppWindow -Title '賢い名付け — 設定' -AllowMissing
+        $settingsWindow = Wait-AppWindow -Title "設定 - SmartPaste - ver $titleVersion" -AllowMissing
         if ($settingsWindow -ne [IntPtr]::Zero) {
             [WUA.Win]::ShowWindow($settingsWindow, 9) | Out-Null
             Save-WindowScreenshot -WindowHandle $settingsWindow -Path (Join-Path $appRoot 'artifacts\failure.png') | Out-Null
@@ -103,7 +105,7 @@ try {
     Start-Sleep -Milliseconds 900
     if (-not (Save-WindowScreenshot -WindowHandle $window -Path (Join-Path $appRoot 'artifacts\explorer-image-ready.png'))) { throw 'Target Explorer is not foreground' }
     Send-TextInput -WindowHandle $window -Text '+{INSERT}' -Raw
-    $dialog = Wait-AppWindow -Title '賢い名付け — 画像を保存' -TimeoutMs 10000
+    $dialog = Wait-AppWindow -Title "画像を保存 - SmartPaste - ver $titleVersion" -TimeoutMs 10000
     [WUA.Win]::ShowWindow($dialog, 9) | Out-Null
     if (-not (Save-WindowScreenshot -WindowHandle $dialog -Path (Join-Path $appRoot 'artifacts\explorer-image.png'))) { throw 'Screenshot failed' }
     Set-ElementValue -Element (Find-ByAutomationId -WindowHandle $dialog -AutomationId 'ImageName') -Value 'image1'
