@@ -181,7 +181,7 @@ internal static class Program
             using var form = new CopyForm([new CopyChoice("R01報告書_20261009.txt"), new CopyChoice("2024-02-28_会議01.txt")], Path.GetTempPath()); Application.Run(form); return;
         }
         using var mutex = new Mutex(true, "Local\\SmartPaste.User." + Environment.UserName, out bool first);
-        if (!first) return;
+        if (!first) { if (!args.Contains("--startup")) KotorinToys.Integration.ManagementEndpoint.ShowExisting("smart-paste"); return; }
         try { using var app = new TrayApp(true); Application.Run(app); }
         catch (Exception ex)
         {

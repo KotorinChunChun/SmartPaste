@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "id": "smart-paste",
+  "name": "SmartPaste",
+  "version": "0.1.4",
+  "summary": "Explorerの貼り付け時にファイル名を確認・整理する",
+  "category": "ファイル操作",
+  "executable": "release/SmartPaste.exe",
+  "installedExecutable": "SmartPaste.exe",
+  "appId": "KotorinToys.SmartPaste",
+  "manual": "README.md",
+  "readme": "README.md",
+  "shortcuts": "config/shortcuts.json",
+  "distributionStatus": "unpublished",
+  "supportedEnvironment": "windows11-x64",
+  "investigationStatus": "confirmed",
+  "icon": null,
+  "capabilities": ["status", "show", "stop", "silent-start"],
+  "runtimes": [
+    {
+      "id": "dotnet8",
+      "name": ".NET 8 Desktop x64",
+      "kind": "dotnet-desktop",
+      "major": 8
+    },
+    {
+      "id": "worker",
+      "name": "SmartPaste.Ocrワーカー",
+      "kind": "file",
+      "path": "ocr/SmartPaste.Ocr.exe",
+      "optional": true,
+      "feature": "画像のOneOCR"
+    },
+    {
+      "id": "oneocr",
+      "name": "OneOCR対応環境",
+      "kind": "external",
+      "optional": true,
+      "feature": "画像のOneOCR",
+      "guide": "固有設定画面と画像命名処理の診断を確認してください。"
+    }
+  ]
+}
