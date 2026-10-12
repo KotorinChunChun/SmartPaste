@@ -11,6 +11,12 @@ internal static class Tests
         Application.SetHighDpiMode(HighDpiMode.PerMonitorV2);
         Application.EnableVisualStyles();
         Application.SetCompatibleTextRenderingDefault(false);
+        using (var icon = AppIcon.Create())
+        {
+            Check(icon.Size == new Size(32, 32), "トレイの専用アイコン寸法");
+            using var bitmap = icon.ToBitmap();
+            Check(bitmap.GetPixel(16, 3).R > bitmap.GetPixel(16, 3).G, "トレイの紫の専用アイコン");
+        }
         if (args.Length > 0 && args[0] == "--probe-explorer")
         {
             var hwnd = new nint(long.Parse(args[1]));

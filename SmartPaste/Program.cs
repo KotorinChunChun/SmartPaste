@@ -24,6 +24,7 @@ internal sealed class TrayApp : ApplicationContext
     private sealed class ExplorerOwner(nint handle) : IWin32Window { public nint Handle => handle; }
     private readonly SettingsForm form = new();
     private readonly NotifyIcon tray;
+    private readonly Icon icon = AppIcon.Create();
     private readonly System.Windows.Forms.Timer timer = new() { Interval = 180 };
     private readonly PasteHook hook;
     private readonly AppSettings settings;
@@ -61,7 +62,8 @@ internal sealed class TrayApp : ApplicationContext
         var enabled = new ToolStripMenuItem("有効", null, (_, _) => form.EnabledBox.Checked = !form.EnabledBox.Checked) { Checked = settings.Enabled };
         form.EnabledBox.CheckedChanged += (_, _) => enabled.Checked = settings.Enabled;
         menu.Items.Add(enabled); menu.Items.Add("設定", null, (_, _) => ShowSettings()); menu.Items.Add("終了", null, (_, _) => Exit());
-        tray = new NotifyIcon { Icon = SystemIcons.Application, Text = "SmartPaste", ContextMenuStrip = menu, Visible = true };
+        form.Icon = icon;
+        tray = new NotifyIcon { Icon = icon, Text = "SmartPaste", ContextMenuStrip = menu, Visible = true };
         tray.DoubleClick += (_, _) => ShowSettings();
         timer.Tick += (_, _) => Capture(); timer.Start();
         if (loadError != null) Report("設定の読み込みに失敗しました：" + loadError, true);
@@ -161,7 +163,7 @@ internal sealed class TrayApp : ApplicationContext
     private void Exit()
     {
         if (busy) { exitRequested = true; copyCancellation?.Cancel(); activeDialog?.Close(); return; }
-        exiting = true; management.Dispose(); timer.Stop(); timer.Dispose(); Native.RemoveClipboardFormatListener(dispatch); hook.Dispose(); tray.Visible = false; tray.Dispose(); form.Dispose(); ExitThread();
+        exiting = true; management.Dispose(); timer.Stop(); timer.Dispose(); Native.RemoveClipboardFormatListener(dispatch); hook.Dispose(); tray.Visible = false; tray.Dispose(); form.Dispose(); icon.Dispose(); ExitThread();
     }
 }
 
