@@ -1,5 +1,9 @@
 # 賢い名付け SmartPaste
 
+## GitHub開発版インストーラー
+
+[Releases](https://github.com/KotorinChunChun/SmartPaste/releases)からWindows 11 x64向けのランタイム・OCRワーカー同梱インストーラーを取得できます。未署名の開発版です。このインストーラーでは.NET Desktop Runtimeの別途導入は不要です。設定は更新・削除時も保持します。下記の`release`からの起動は開発用配置の説明です。
+
 Explorer で同じフォルダへの `Ctrl+V` と `Shift+Insert` に割り込み、数字・年月・日付を繰り上げてファイルをコピーする Windows 常駐アプリです。別フォルダへのファイル貼り付けは OS 標準の処理を使います。クリップボードの画像は、名前を入力して PNG として保存できます。
 
 ## 起動
