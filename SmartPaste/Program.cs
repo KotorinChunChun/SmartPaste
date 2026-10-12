@@ -61,7 +61,7 @@ internal sealed class TrayApp : ApplicationContext
         var enabled = new ToolStripMenuItem("有効", null, (_, _) => form.EnabledBox.Checked = !form.EnabledBox.Checked) { Checked = settings.Enabled };
         form.EnabledBox.CheckedChanged += (_, _) => enabled.Checked = settings.Enabled;
         menu.Items.Add(enabled); menu.Items.Add("設定", null, (_, _) => ShowSettings()); menu.Items.Add("終了", null, (_, _) => Exit());
-        tray = new NotifyIcon { Icon = SystemIcons.Application, Text = "賢い名付け", ContextMenuStrip = menu, Visible = true };
+        tray = new NotifyIcon { Icon = SystemIcons.Application, Text = "SmartPaste", ContextMenuStrip = menu, Visible = true };
         tray.DoubleClick += (_, _) => ShowSettings();
         timer.Tick += (_, _) => Capture(); timer.Start();
         if (loadError != null) Report("設定の読み込みに失敗しました：" + loadError, true);

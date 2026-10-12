@@ -305,7 +305,7 @@ internal sealed class SettingsForm : Form
         base.WndProc(ref message);
         if (message.Msg == 0x031D) ClipboardChanged?.Invoke();
     }
-    public CheckBox EnabledBox { get; } = new() { Name = "EnableInterception", Text = "賢い名付けを有効にする", AutoSize = true, Dock = DockStyle.Fill };
+    public CheckBox EnabledBox { get; } = new() { Name = "EnableInterception", Text = "SmartPasteを有効にする", AutoSize = true, Dock = DockStyle.Fill };
     public CheckBox ReviewBox { get; } = new() { Name = "AlwaysReview", Text = "決定前に数字・日付を確認・修正する", AutoSize = true, Dock = DockStyle.Fill };
     public TextBox CodexPath { get; } = Ui.Text("CodexPath");
     public TextBox History { get; } = new() { Name = "History", Dock = DockStyle.Fill, ReadOnly = true, Multiline = true, ScrollBars = ScrollBars.Vertical };

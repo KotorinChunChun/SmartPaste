@@ -7,7 +7,8 @@
     <Nullable>enable</Nullable>
     <ApplicationHighDpiMode>PerMonitorV2</ApplicationHighDpiMode>
     <Version>0.1.4</Version>
-    <AssemblyTitle>賢い名付け</AssemblyTitle>
+    <AssemblyTitle>SmartPaste</AssemblyTitle>
+    <Product>SmartPaste</Product>
   </PropertyGroup>
   <ItemGroup><InternalsVisibleTo Include="SmartPaste.Tests" /></ItemGroup>
 </Project>

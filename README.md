@@ -1,4 +1,4 @@
-# 賢い名付け SmartPaste
+# SmartPaste
 
 ## GitHub開発版インストーラー
 
