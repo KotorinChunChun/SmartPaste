@@ -98,7 +98,7 @@ UI と Explorer の実機検証スクリプトは `scripts/ui-smoke.ps1` と `sc
 | `SmartPaste/Images.cs` | PNG 保存、Windows OCR、Codex CLI 呼び出し |
 | `SmartPaste/CandidateSelection.cs` | 最大3候補の選択、連結、並べ替え |
 | `SmartPaste.Ocr/` | Snipping Tool の OneOCR 自動検出と専用プロセスでの認識 |
-| `SmartPaste/Forms.cs` | コピー候補、画像保存、設定、進捗の自作画面 |
+| `SmartPaste/Ui.cs`、各`*Form.cs` | 共通UI部品とコピー候補、画像保存、設定、進捗の個別画面 |
 | `SmartPaste/Program.cs` | 常駐、設定、貼り付け処理の振り分け |
 | `SmartPaste.Tests/` | 命名・コピー・PNG・CLI 引数・UI レイアウトの検証 |
 
