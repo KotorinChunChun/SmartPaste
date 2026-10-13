@@ -1,6 +1,7 @@
 using System.Text.Json;
 
 namespace SmartPaste;
+
 internal sealed partial class TrayApp
 {
     private void Capture()
@@ -66,7 +67,7 @@ internal sealed partial class TrayApp
             hook.Snapshot = new(window, focus, sequence, directory, clipboardFiles ?? [], clipboardImage, Environment.TickCount64);
             form.State.Text = "有効";
         }
-        catch (Exception ex)when (ex is System.Runtime.InteropServices.ExternalException or IOException or ArgumentException)
+        catch (Exception ex) when (ex is System.Runtime.InteropServices.ExternalException or IOException or ArgumentException)
         {
             hook.Snapshot = null;
             lastSequence = uint.MaxValue;

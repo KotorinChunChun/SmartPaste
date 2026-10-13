@@ -1,6 +1,7 @@
 using System.Text.Json;
 
 namespace SmartPaste;
+
 internal sealed partial class TrayApp
 {
     private void ShowSettings()

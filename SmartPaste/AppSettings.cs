@@ -1,6 +1,7 @@
 using System.Text.Json;
 
 namespace SmartPaste;
+
 internal sealed class AppSettings
 {
     public bool Enabled { get; set; } = true;

@@ -1,6 +1,7 @@
 using System.Text.Json;
 
 namespace SmartPaste;
+
 internal static class Program
 {
     [STAThread]

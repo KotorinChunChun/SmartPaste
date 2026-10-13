@@ -1,4 +1,5 @@
 namespace SmartPaste;
+
 internal sealed class SettingsForm : Form
 {
     public event Action? ClipboardChanged;

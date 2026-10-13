@@ -1,4 +1,5 @@
 namespace SmartPaste;
+
 internal sealed class CopyForm : Form
 {
     private readonly List<CopyChoice> choices;
@@ -155,7 +156,7 @@ internal sealed class CopyForm : Form
                 reserved.Add(name);
                 grid.Rows[i].Cells[1].Value = name;
             }
-            catch (Exception ex)when (ex is ArgumentException or IOException or ArgumentOutOfRangeException)
+            catch (Exception ex) when (ex is ArgumentException or IOException or ArgumentOutOfRangeException)
             {
                 grid.Rows[i].Cells[1].Value = "";
                 failure ??= $"{choices[i].OriginalName}：{ex.Message}";

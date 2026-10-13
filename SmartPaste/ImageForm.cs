@@ -1,4 +1,5 @@
 namespace SmartPaste;
+
 internal sealed class ImageForm : Form
 {
     private readonly Bitmap image;
@@ -162,7 +163,7 @@ internal sealed class ImageForm : Form
             DialogResult = DialogResult.OK;
             Close();
         }
-        catch (Exception ex)when (ex is ArgumentException or IOException or UnauthorizedAccessException or System.Runtime.InteropServices.ExternalException)
+        catch (Exception ex) when (ex is ArgumentException or IOException or UnauthorizedAccessException or System.Runtime.InteropServices.ExternalException)
         {
             error.Text = ex is IOException && File.Exists(Path.Combine(directory, Images.PngName(name.Text))) ? "同じ名前のファイルが存在します。" : ex.Message;
         }
@@ -258,7 +259,7 @@ internal sealed class ImageForm : Form
             error.Text = "";
             save.Enabled = true;
         }
-        catch (Exception ex)when (ex is ArgumentException or IOException)
+        catch (Exception ex) when (ex is ArgumentException or IOException)
         {
             error.Text = ex.Message;
             save.Enabled = false;

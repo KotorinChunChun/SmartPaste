@@ -1,4 +1,5 @@
 namespace SmartPaste;
+
 internal sealed class BusySpinner : Control
 {
     private readonly System.Windows.Forms.Timer animation = new()

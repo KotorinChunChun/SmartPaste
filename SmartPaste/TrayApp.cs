@@ -1,6 +1,7 @@
 using System.Text.Json;
 
 namespace SmartPaste;
+
 internal sealed partial class TrayApp : ApplicationContext
 {
     private sealed class ExplorerOwner(nint handle) : IWin32Window
@@ -32,7 +33,7 @@ internal sealed partial class TrayApp : ApplicationContext
         {
             settings = File.Exists(AppSettings.PathName) ? JsonSerializer.Deserialize<AppSettings>(File.ReadAllText(AppSettings.PathName)) ?? new() : new();
         }
-        catch (Exception ex)when (ex is JsonException or IOException or UnauthorizedAccessException)
+        catch (Exception ex) when (ex is JsonException or IOException or UnauthorizedAccessException)
         {
             settings = new();
             loadError = ex.Message;
@@ -116,7 +117,7 @@ internal sealed partial class TrayApp : ApplicationContext
         {
             settings.Save();
         }
-        catch (Exception ex)when (ex is IOException or UnauthorizedAccessException)
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
         {
             Report("設定を保存できません：" + ex.Message, true);
         }

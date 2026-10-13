@@ -1,4 +1,5 @@
 namespace SmartPaste;
+
 internal static class Ui
 {
     public static void Style(Form form, string title, Size size)

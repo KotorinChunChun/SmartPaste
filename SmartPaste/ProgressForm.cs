@@ -1,4 +1,5 @@
 namespace SmartPaste;
+
 internal sealed class ProgressForm : Form
 {
     public Label State { get; } = Ui.Label("コピー中…");

@@ -99,7 +99,8 @@ UI と Explorer の実機検証スクリプトは `scripts/ui-smoke.ps1` と `sc
 | `SmartPaste/CandidateSelection.cs` | 最大3候補の選択、連結、並べ替え |
 | `SmartPaste.Ocr/` | Snipping Tool の OneOCR 自動検出と専用プロセスでの認識 |
 | `SmartPaste/Ui.cs`、各`*Form.cs` | 共通UI部品とコピー候補、画像保存、設定、進捗の個別画面 |
-| `SmartPaste/Program.cs` | 常駐、設定、貼り付け処理の振り分け |
+| `SmartPaste/Program.cs`、`AppSettings.cs` | 起動入口と設定の保存 |
+| `SmartPaste/TrayApp*.cs`、`CopyReviewPolicy.cs` | 常駐初期化、監視、画像／ファイル貼付、終了、確認要否の方針 |
 | `SmartPaste.Tests/` | 命名・コピー・PNG・CLI 引数・UI レイアウトの検証 |
 
 設定は `%LOCALAPPDATA%\SmartPaste\settings.json` に保存します。コピー履歴とエラーは設定画面に表示し、常駐中だけ保持します。OneOCR の API 定義は [SnippingToolOcrSharp](https://github.com/ksasao/SnippingToolOcrSharp) と [win11-oneocr](https://github.com/b1tg/win11-oneocr) を参照して確認しました。

@@ -35,6 +35,15 @@ internal static class Tests
         Directory.CreateDirectory(root);
         try
         {
+            var plainChoice = new CopyChoice(Path.Combine(root, "資料.txt"));
+            var numericChoice = new CopyChoice(Path.Combine(root, "R01報告書.txt"));
+            var combinedChoice = new CopyChoice(Path.Combine(root, "R01報告書_20261009.txt"));
+            Check(!CopyReviewPolicy.NeedsReview(false, []), "確認方針：空対象は自動確認しない");
+            Check(!CopyReviewPolicy.NeedsReview(false, [plainChoice]), "確認方針：単一の通常名は自動処理");
+            Check(numericChoice.Tokens.Count == 1 && !CopyReviewPolicy.NeedsReview(false, [numericChoice]), "確認方針：単一数字候補は自動処理");
+            Check(CopyReviewPolicy.NeedsReview(false, [plainChoice, numericChoice]), "確認方針：複数ファイルは確認する");
+            Check(combinedChoice.Tokens.Count > 1 && CopyReviewPolicy.NeedsReview(false, [combinedChoice]), "確認方針：複数候補は確認する");
+            Check(CopyReviewPolicy.NeedsReview(true, [plainChoice]), "確認方針：常に確認する設定を優先");
             var cases = new Dictionary<string, string>
             {
                 ["2026年1月_月報.txt"] = "2026年2月_月報.txt", ["2026年12月_月報.txt"] = "2027年1月_月報.txt",
