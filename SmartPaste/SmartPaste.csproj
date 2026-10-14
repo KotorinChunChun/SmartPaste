@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <ApplicationHighDpiMode>PerMonitorV2</ApplicationHighDpiMode>
-    <Version>0.1.4</Version>
+    <Version>0.1.5</Version>
     <AssemblyTitle>SmartPaste</AssemblyTitle>
     <Product>SmartPaste</Product>
   </PropertyGroup>

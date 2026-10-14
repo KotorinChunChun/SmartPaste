@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "smart-paste",
   "name": "SmartPaste",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "summary": "Explorerの貼り付け時にファイル名を確認・整理する",
   "category": "ファイル操作",
   "executable": "release/SmartPaste.exe",
