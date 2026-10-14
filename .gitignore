@@ -2,6 +2,7 @@ bin/
 obj/
 release/
 artifacts/
+/dev/history/*/logs/
 .vs/
 *.user
 *.suo
