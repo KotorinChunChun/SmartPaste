@@ -11,6 +11,10 @@ internal static class Tests
         Application.SetHighDpiMode(HighDpiMode.PerMonitorV2);
         Application.EnableVisualStyles();
         Application.SetCompatibleTextRenderingDefault(false);
+        Check(!SmartPaste.Program.StartHidden([]), "引数なしの通常起動は設定画面を開く");
+        Check(SmartPaste.Program.StartHidden(["--startup"]), "自動起動は画面を表示しない");
+        Check(SmartPaste.Program.StartHidden(["--hidden"]), "明示hiddenは画面を表示しない");
+        Check(SmartPaste.Program.StartHidden(["--tray"]), "旧tray引数の無表示起動を保持");
         using (var icon = AppIcon.Create())
         {
             Check(icon.Size == new Size(32, 32), "トレイの専用アイコン寸法");

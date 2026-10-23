@@ -4,6 +4,7 @@ namespace SmartPaste;
 
 internal static class Program
 {
+    internal static bool StartHidden(string[] args) => args.Contains("--startup") || args.Contains("--hidden") || args.Contains("--tray");
     [STAThread]
     private static void Main(string[] args)
     {
@@ -28,14 +29,14 @@ internal static class Program
         using var mutex = new Mutex(true, "Local\\SmartPaste.User." + Environment.UserName, out bool first);
         if (!first)
         {
-            if (!args.Contains("--startup"))
+            if (!StartHidden(args))
                 KotorinToys.Integration.ManagementEndpoint.ShowExisting("smart-paste");
             return;
         }
 
         try
         {
-            using var app = new TrayApp(true);
+            using var app = new TrayApp(StartHidden(args));
             Application.Run(app);
         }
         catch (Exception ex)
