@@ -35,6 +35,15 @@ internal static class Tests
         {
             using var image = SmartPaste.Program.DemoImage(); Clipboard.SetImage(image); return 0;
         }
+        if (args.Length > 0 && args[0] == "--sample-output")
+        {
+            if (args.Length < 2 || string.IsNullOrWhiteSpace(args[1]))
+            {
+                Console.Error.WriteLine("使い方: SmartPaste.Tests.exe --sample-output <出力先>");
+                return 2;
+            }
+            return RunSampleOutput(Path.GetFullPath(args[1]));
+        }
         var root = Path.Combine(Path.GetTempPath(), "SmartPaste-tests-" + Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(root);
         try
@@ -293,4 +302,69 @@ internal static class Tests
     }
     private static void Check(bool condition, string description) { if (!condition) throw new Exception("FAIL: " + description); passed++; }
     private static void Throws(Action action, string description) { try { action(); } catch (Exception ex) when (ex is ArgumentException or IOException or InvalidDataException) { passed++; return; } throw new Exception("FAIL: " + description); }
+
+    private static int RunSampleOutput(string outputRoot)
+    {
+        Directory.CreateDirectory(outputRoot);
+        var sourceRoot = Path.Combine(outputRoot, "sources");
+        var copyRoot = Path.Combine(outputRoot, "copy-output");
+        var ocrRoot = Path.Combine(outputRoot, "ocr-output");
+        Directory.CreateDirectory(sourceRoot);
+        Directory.CreateDirectory(copyRoot);
+        Directory.CreateDirectory(ocrRoot);
+
+        var serialSource = Path.Combine(sourceRoot, "R01報告書.txt");
+        File.WriteAllText(serialSource, "連番サンプル");
+        File.WriteAllText(Path.Combine(copyRoot, "R02報告書.txt"), "既存ファイル");
+        var serialResult = CopyService.CopyAsync([new CopyChoice(serialSource)], copyRoot).GetAwaiter().GetResult().Single();
+        EnsureSampleResult(serialResult, "連番");
+
+        var dateSource = Path.Combine(sourceRoot, "202612_月報.txt");
+        File.WriteAllText(dateSource, "年月サンプル");
+        File.WriteAllText(Path.Combine(copyRoot, "202701_月報.txt"), "既存ファイル");
+        File.WriteAllText(Path.Combine(copyRoot, "202702_月報.txt"), "既存ファイル");
+        var dateResult = CopyService.CopyAsync([new CopyChoice(dateSource)], copyRoot).GetAwaiter().GetResult().Single();
+        EnsureSampleResult(dateResult, "年月");
+
+        using var bitmap = SmartPaste.Program.DemoImage();
+        var ocrLines = Images.OcrAsync(bitmap, default, OcrEngineKind.OneOcr).GetAwaiter().GetResult();
+        var candidates = ocrLines.Select(Images.Suggestion).Where(name => name.Length > 0)
+            .Select(Images.NameStem).Distinct(StringComparer.OrdinalIgnoreCase).Take(3).ToArray();
+        if (candidates.Length == 0) throw new InvalidOperationException("OCRからファイル名候補を取得できませんでした。");
+        var selection = new CandidateSelection();
+        foreach (var candidate in candidates) selection.Toggle(candidate);
+        var imageResult = Images.Save(bitmap, ocrRoot, selection.Join("_"));
+
+        var report = new
+        {
+            generatedAt = DateTimeOffset.Now,
+            outputRoot,
+            samples = new
+            {
+                serial = new { source = serialSource, destinationDirectory = copyRoot, output = serialResult.Destination, expected = "R03報告書.txt" },
+                date = new { source = dateSource, destinationDirectory = copyRoot, output = dateResult.Destination, expected = "202703_月報.txt" },
+                ocr = new { source = "SmartPaste.Program.DemoImage()", destinationDirectory = ocrRoot, recognizedLines = ocrLines, candidates, output = imageResult }
+            }
+        };
+        var reportPath = Path.Combine(outputRoot, "sample-output.json");
+        File.WriteAllText(reportPath, JsonSerializer.Serialize(report, new JsonSerializerOptions { WriteIndented = true }));
+        CheckSampleFile(serialResult.Destination, "連番出力");
+        CheckSampleFile(dateResult.Destination, "年月出力");
+        CheckSampleFile(imageResult, "OCR命名画像");
+        Console.WriteLine(JsonSerializer.Serialize(report, new JsonSerializerOptions { WriteIndented = true }));
+        Console.WriteLine($"PASS: 実ファイルサンプルを {outputRoot} に出力しました。");
+        return 0;
+    }
+
+    private static void EnsureSampleResult(CopyResult result, string label)
+    {
+        if (result.Error != null || string.IsNullOrWhiteSpace(result.Destination))
+            throw new IOException($"{label}サンプルのコピーに失敗しました: {result.Error}");
+    }
+
+    private static void CheckSampleFile(string? path, string label)
+    {
+        if (string.IsNullOrWhiteSpace(path) || !File.Exists(path))
+            throw new IOException($"{label}が出力されていません。");
+    }
 }

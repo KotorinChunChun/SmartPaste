@@ -13,6 +13,16 @@ pwsh -File scripts/publish.ps1
 
 実 OCR と AI を合成画像で検証する場合は、`build.ps1 -Test -Live` を使います。AI 呼び出しは Codex の利用枠を消費します。
 
+READMEの画像説明に使う実ファイル出力は、既存のテスト入口へ出力先を渡して実行します。指定先だけを新規作成し、設定・履歴・クリップボード・Explorerは変更しません。
+
+```powershell
+$output = 'C:\path\to\SmartPaste\dev\history\v0.1.6\logs\readme-cli-sample-YYYYMMDD-HHMMSS\output'
+dotnet publish SmartPaste.Tests/SmartPaste.Tests.csproj -c Release -r win-x64 --self-contained true -o $output
+& "$output\SmartPaste.Tests.exe" --sample-output "$output\sample"
+```
+
+`--sample-output` は連番（`R01`の衝突後）、年月（`202612`から既存の`202701`・`202702`を越えた名前）、実OneOCRの候補連結によるPNGを作成し、コピー元・保存先・認識行・出力ファイルを `sample-output.json` に記録します。Explorerへの物理貼り付けはこのCLI検証に含みません。
+
 UI と Explorer の実機検証スクリプトは `scripts/ui-smoke.ps1` と `scripts/explorer-smoke.ps1` です。`ui-smoke.ps1 -Ai` で AI ボタンと候補10件の選択も検証します。`-EnterSave` で実際に Enter を送り、名前欄では保存・区切り欄や無効名では保存しないことを確認します。これらは `windows-ui-automation` スキルのヘルパーを使うため、別 PC では `-Toolkit` にヘルパーのパスを指定してください。実機入力を使う検証の間は PC 操作を控えてください。
 
 | 構成 | 内容 |
