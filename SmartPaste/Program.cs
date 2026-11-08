@@ -9,6 +9,17 @@ internal static class Program
     private static void Main(string[] args)
     {
         ApplicationConfiguration.Initialize();
+#if DEBUG
+        // README・GUI確認用。実設定・クリップボード監視・外部CLIに接続しない。
+        if (args.Length > 0 && args[0] == "--demo-settings")
+        {
+            using var form = new SettingsForm();
+            form.EnabledBox.Checked = true;
+            form.State.Text = "説明用の設定例（変更は保存しません）";
+            Application.Run(form);
+            return;
+        }
+#endif
         if (args.Length > 0 && args[0] == "--demo-image")
         {
             var folder = args.Length > 1 ? args[1] : Path.GetTempPath();
@@ -21,7 +32,7 @@ internal static class Program
 
         if (args.Length > 0 && args[0] == "--demo-copy")
         {
-            using var form = new CopyForm([new CopyChoice("R01報告書_20261009.txt"), new CopyChoice("2024-02-28_会議01.txt")], Path.GetTempPath());
+            using var form = new CopyForm([new CopyChoice("R01報告書_20261009.txt"), new CopyChoice("2024-02-28_会議01.txt")], args.Length > 1 ? args[1] : Path.GetTempPath());
             Application.Run(form);
             return;
         }
