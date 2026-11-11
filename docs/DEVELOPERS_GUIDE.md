@@ -13,7 +13,7 @@ pwsh -File scripts/publish.ps1
 
 実 OCR と AI を合成画像で検証する場合は、`build.ps1 -Test -Live` を使います。AI 呼び出しは Codex の利用枠を消費します。
 
-READMEの画像説明に使う実ファイル出力は、既存のテスト入口へ出力先を渡して実行します。指定先だけを新規作成し、設定・履歴・クリップボード・Explorerは変更しません。
+READMEの画像説明に使う実ファイルを出力する場合は、既存のテスト入口へ出力先を渡して実行します。指定先だけを新規作成し、設定・履歴・クリップボード・Explorerは変更しません。
 
 ```powershell
 $output = 'C:\path\to\SmartPaste\dev\history\v0.1.6\logs\readme-cli-sample-YYYYMMDD-HHMMSS\output'
